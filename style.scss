@@ -1,0 +1,114 @@
+@use "moduleColor.scss";
+@use "function.scss";
+
+@mixin article-style($color, $border-color, $font-size: 1rem) {
+  color: $color;
+  border: function.rem-Converter(1) solid $border-color;
+  font-size: $font-size;
+  padding: function.rem-Converter(5);
+  text-align: center;
+  @content;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  border: function.rem-Converter(1) solid darken(moduleColor.$color-primary, 8%);
+
+  & h1 {
+    color: moduleColor.$secondary-color;
+    text-decoration: underline;
+    text-decoration-color: moduleColor.$decor-color;
+    text-align: center;
+  }
+
+  & h2 {
+    @extend h1;
+    text-decoration: none;
+    padding: 1rem;
+    margin: auto;
+    border: inherit;
+  }
+
+  .main-section {
+    display: flex;
+    flex-direction: row;
+    margin: function.rem-Converter(15);
+
+    article {
+      @include article-style(
+        moduleColor.$decor-color,
+        moduleColor.$secondary-color
+      ) {
+        &:last-of-type {
+          border-left: none;
+        }
+        &:first-of-type {
+          border-right: none;
+        }
+        & .text-red {
+          color: moduleColor.$color-primary;
+        }
+        &:nth-child(2) {
+          border-right: none;
+        }
+        display: flex;
+        flex-basis: auto;
+      }
+    }
+  }
+
+  .numbers-boxes-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex-basis: 0;
+    margin: function.rem-Converter(15);
+
+    & .numbers-box {
+      border: function.rem-Converter(1) solid
+        darken(moduleColor.$color-primary, 8%);
+      margin-right: function.rem-Converter(20);
+      margin-bottom: function.rem-Converter(5);
+      width: function.rem-Converter(45);
+      height: function.rem-Converter(45);
+    }
+    & .numbers-box:last-of-type {
+      margin-right: 0;
+    }
+  }
+
+  .footer-section {
+    @include article-style(
+      moduleColor.$secondary-color,
+      moduleColor.$decor-color,
+      function.rem-Converter(24)
+    ) {
+      display: block;
+      margin: function.rem-Converter(15);
+    }
+  }
+}
+
+$rem-classes: (
+  fs-1rem: 1rem,
+  fs-2rem: 2rem,
+  fs-3rem: 3rem,
+);
+
+@each $name, $size in $rem-classes {
+  .#{$name} {
+    font-size: $size;
+  }
+}
+
+@for $i from 1 to 20 {
+  .numbers-box:nth-child(#{$i}) {
+    background-color: darken(moduleColor.$background-box, $i * 5%);
+    color: lighten(moduleColor.$base-color, $i * 5%);
+    @if ($i == 10) {
+      background-color: moduleColor.$decor-color;
+      color: moduleColor.$color-primary;
+    }
+  }
+}
